@@ -19,7 +19,7 @@ x-environment:
 x-user:
   &default-user
     # The default user under which the containers should run. Change this if you are on linux and run with another user than id `1000`
-    user: '1000'
+    user: '33333'
 
 volumes:
   files:
@@ -42,8 +42,6 @@ services:
       lando.type: php-cli-drupal
     << : *default-volumes # loads the defined volumes from the top
     user: root
-    volumes_from: ### mount the ssh-agent from the pygmy or cachalot ssh-agent. Automatically removed in CI.
-      - container:amazeeio-ssh-agent ### Local overrides to mount host SSH keys. Automatically removed in CI.
     environment:
       << : *default-environment # loads the defined environment variables from the top
 
@@ -59,6 +57,8 @@ services:
       lando.type: nginx-drupal
     << : *default-volumes # loads the defined volumes from the top
     << : *default-user # uses the defined user from top
+    ports:
+      - "8080"
     depends_on:
       - cli # basically just tells docker-compose to build the cli first
     environment:
