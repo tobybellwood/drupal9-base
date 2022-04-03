@@ -1,0 +1,24 @@
+diff --git a/src/Element/Address.php b/src/Element/Address.php
+index b8df3be..7c3af7c 100644
+--- a/src/Element/Address.php
++++ b/src/Element/Address.php
+@@ -127,14 +127,18 @@ class Address extends FormElement {
+     if (is_array($input) && !isset($input['country_code'])) {
+       $input = NULL;
+     }
++    $value = $element['#default_value'];
+     if (is_array($input)) {
+       $input = self::applyDefaults($input);
+       if (empty($input['country_code']) && $element['#required']) {
+         $input['country_code'] = $element['#default_value']['country_code'];
+       }
++      $value = $input;
+     }
++    // Strip trailing whitespace, to avoid validation errors.
++    $value = array_map('trim', $value);
+ 
+-    return is_array($input) ? $input : $element['#default_value'];
++    return $value;
+   }
+ 
+   /**
